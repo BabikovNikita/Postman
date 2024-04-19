@@ -1,0 +1,659 @@
+{
+	"info": {
+		"_postman_id": "b3d55b00-dfec-4ed7-af3a-d2a850cf0788",
+		"name": "ConfigurationService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16978745"
+	},
+	"item": [
+		{
+			"name": "Запустить обезличивание",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var ModelName = pm.response.json().name;\r",
+							"pm.globals.set(\"ModelName\", ModelName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/3",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Статус анализа данных",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://10.5.10.76:8081/stats/analyzer/models/{{ModelName}}",
+					"protocol": "http",
+					"host": [
+						"10",
+						"5",
+						"10",
+						"76"
+					],
+					"port": "8081",
+					"path": [
+						"stats",
+						"analyzer",
+						"models",
+						"{{ModelName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Статус обезличивания данных",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/stats/models/{{ModelName}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"stats",
+						"models",
+						"{{ModelName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var ModelID = pm.response.json();\r",
+							"pm.globals.set(\"ModelID\", ModelID);\r",
+							"var ModelName = pm.response.json().name;\r",
+							"pm.globals.set(\"ModelName\", ModelName);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"name\": \"Testmodel API\",\r\n\t\"description\": \"Тестовая модель АПИ\",\r\n\t\"stores\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД Oracle",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var ModelID = pm.response.json();\r",
+							"pm.globals.set(\"ModelID\", ModelID);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ\",\r\n\t\"description\": \"Тестовая модель АПИ\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection oracle API\",\r\n\t\t\t\"description\": \"Test connection oracle API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n\t\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\t\"loginSource\": \"devel\",\r\n\t\t\t\"passwordSource\": \"q1\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n\t\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\t\"loginReceiver\": \"devel\",\r\n\t\t\t\"passwordReceiver\": \"q1\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить сведения о модели",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//var ModelName = pm.response.json().name;\r",
+							"//pm.globals.set(\"ModelName\", ModelName);\r",
+							"//var description = pm.response.json().description;\r",
+							"//pm.globals.set(\"description\", description);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить список моделей",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response should be okay to process\", function () {\r",
+							"    pm.response.to.not.have.response(\"Тестовая модель АПИ\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"string_you_want_to_search\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить heartbeat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/heartbeat/Тестовая модель АПИ Oracle",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"heartbeat",
+						"Тестовая модель АПИ Oracle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить heartbeat Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"modelName\": \"Тестовая модель АПИ Oracle\",\r\n    \"status\": \"ANALYZING\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/heartbeat/Тестовая модель АПИ Oracle",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"heartbeat",
+						"Тестовая модель АПИ Oracle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Запустить анализ данных Oracle",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"store\": {\r\n\t\t\"name\": \"Test connection oracle API\",\r\n\t\t\"description\": \"Test connection oracle API\",\r\n\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\"loginSource\": \"devel\",\r\n\t\t\"passwordSource\": \"NJhcha+0kJe2NIQHFjlIfQ==\",\r\n\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\"loginReceiver\": \"devel\",\r\n\t\t\"passwordReceiver\": \"QuOVMR6zNjqccca+ZJlydw==\",\r\n\t\t\"tables\": [],\r\n\t\t\"beforeSourceSql\": null,\r\n\t\t\"isBeforeSourceEnabled\": false,\r\n\t\t\"afterSourceSql\": null,\r\n\t\t\"isAfterSourceEnabled\": false,\r\n\t\t\"beforeReceiverSql\": null,\r\n\t\t\"isBeforeReceiverEnabled\": false,\r\n\t\t\"afterReceiverSql\": null,\r\n\t\t\"isAfterReceiverEnabled\": false,\r\n\t\t\"shellScriptBefore\": null,\r\n\t\t\"shellScriptAfter\": null\r\n\t},\r\n\t\"modelName\": \"Тестовая модель АПИ\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://vstest.labvs.local:8090/analyze",
+					"protocol": "http",
+					"host": [
+						"vstest",
+						"labvs",
+						"local"
+					],
+					"port": "8090",
+					"path": [
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить подключение к БД",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"id\": {{ModelID}},\r\n\t\"name\": \"{{ModelName}}\",\r\n\t\"description\": \"{{description}}\",\r\n\t\"stores\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменить модель",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"id\": 1,\r\n\t\"name\": \"Тестовая модель АПИ DataType postgresql\",\r\n\t\"description\": \"Тестовая модель АПИ DataType postgresql\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection postgresql DataType API\",\r\n\t\t\t\"description\": \"Test connection postgresql API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:postgresql://10.5.10.67:5432/labvsdatatype\",\r\n\t\t\t\"dbTypeSource\": \"POSTGRES\",\r\n\t\t\t\"loginSource\": \"labvsdatatype\",\r\n\t\t\t\"passwordSource\": \"pd8V6ltU5OFmFXMs3cOad6QX7oXyn1+W\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:postgresql://10.5.10.69:5432/labvsdatatype\",\r\n\t\t\t\"dbTypeReceiver\": \"POSTGRES\",\r\n\t\t\t\"loginReceiver\": \"labvsdatatype\",\r\n\t\t\t\"passwordReceiver\": \"eK1/wuDkQqrTt63YPNmc19/gp0F0OP+c\",\r\n\t\t\t\"tables\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"acountnumber\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"acountnumber\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"number_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ACCOUNT_NUMBER\": 2\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 9,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"number_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"address\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"address\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"address_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 22\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 274\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"checkcontrlsum\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"checkcontrlsum\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": true,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"account_number\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"address\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 15\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 278\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 6000\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"creditcard\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"email\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"fio\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"iban\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 2,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"kpp\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"mobilephone\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"number\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"string\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": null,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"ogrn\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"okpo\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"snils\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"creditcard\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"creditcard\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"card_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"CreditCard\": 39\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 4,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"card_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"CreditCard\": 1\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 42,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"card_unique\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"CreditCard\": 45\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"date\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"date\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"DATE\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"DATE\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"datehhmm\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"TIMESTAMP\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"dateutc\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"TIMESTAMP\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"email\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"email\\\"\",\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"beforeSourceSQL\": \"\",\r\n\t\t\t\t\t\"afterSourceSQL\": \"\",\r\n\t\t\t\t\t\"beforeReceiverSQL\": \"\",\r\n\t\t\t\t\t\"afterReceiverSQL\": \"\",\r\n\t\t\t\t\t\"batchSQL\": \"\",\r\n\t\t\t\t\t\"fetchBatchSize\": \"\",\r\n\t\t\t\t\t\"insertBatchSize\": \"\",\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"orderByColumns\": \"\",\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"email_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"EMAIL\": 15\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"email\": 16\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\",\r\n\t\t\t\t\t\t\t\"id\": 0\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"email_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"EMAIL\": 1\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\",\r\n\t\t\t\t\t\t\t\"id\": 1\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"email_unique\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"EMAIL\": 16\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"email\": 16\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\",\r\n\t\t\t\t\t\t\t\"id\": 2\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"string\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"id\": 3,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t]\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"fio\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"fio\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"fio_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 2\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 8\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 222\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"fio_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 2\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 11,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"INTEGER\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"iban\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"iban\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"iban_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"IBAN\": 80\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"iban_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 4,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"inn\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"inn\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"inn_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"OKPO\": 1\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"INN\": 39\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"inn_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"KPP\": 2\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"inntest\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"inntest\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"inn\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"INN\": 2\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"inn2\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"INN\": 1\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"kpp\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"kpp\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"kpp_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"KPP\": 32\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"kpp_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"ltd\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"ltd\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"longp\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 1\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 2\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 6\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"longs\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 11\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 20\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"short\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 8\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 8\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 23\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"ogrn\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"ogrn\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"ogrn_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"OGRN\": 4\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"ogrn_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 2,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"okpo\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"okpo\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"okpo_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"OKPO\": 6\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"okpo_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"phone\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"phone\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"SNILS\": 1\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"PHONE\": 29\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_correctspec\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"PHONE\": 14\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"OKPO\": 1\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"pnonecity\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"pnonecity\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"snils\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"snils\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"snils_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"SNILS\": 42\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"snils_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"beforeSourceSql\": null,\r\n\t\t\t\"isBeforeSourceEnabled\": false,\r\n\t\t\t\"afterSourceSql\": null,\r\n\t\t\t\"isAfterSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverSql\": null,\r\n\t\t\t\"isBeforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverSql\": null,\r\n\t\t\t\"isAfterReceiverEnabled\": false,\r\n\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\"isLock\": false,\r\n\t\t\t\"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменить модель Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"id\": 1,\r\n\t\"name\": \"Тестовая модель АПИ DataType postgresql\",\r\n\t\"description\": \"Тестовая модель АПИ DataType postgresql\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection postgresql DataType API\",\r\n\t\t\t\"description\": \"Test connection postgresql API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:postgresql://10.5.10.67:5432/labvsdatatype\",\r\n\t\t\t\"dbTypeSource\": \"POSTGRES\",\r\n\t\t\t\"loginSource\": \"labvsdatatype\",\r\n\t\t\t\"passwordSource\": \"pd8V6ltU5OFmFXMs3cOad6QX7oXyn1+W\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:postgresql://10.5.10.69:5432/labvsdatatype\",\r\n\t\t\t\"dbTypeReceiver\": \"POSTGRES\",\r\n\t\t\t\"loginReceiver\": \"labvsdatatype\",\r\n\t\t\t\"passwordReceiver\": \"eK1/wuDkQqrTt63YPNmc19/gp0F0OP+c\",\r\n\t\t\t\"tables\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"acountnumber\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"acountnumber\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"number_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ACCOUNT_NUMBER\": 2\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 9,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"number_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"address\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"address\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"address_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 22\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 274\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"checkcontrlsum\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"checkcontrlsum\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": true,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"account_number\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"address\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 15\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 278\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 6000\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"creditcard\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"email\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"fio\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"iban\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 2,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"kpp\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"mobilephone\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"number\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"string\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": null,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"ogrn\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"okpo\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"snils\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"creditcard\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"creditcard\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"card_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"CreditCard\": 39\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 4,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"card_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"CreditCard\": 1\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 42,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"card_unique\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"CreditCard\": 45\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"date\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"date\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"DATE\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"DATE\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"datehhmm\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"TIMESTAMP\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"dateutc\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"TIMESTAMP\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"email\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"email\\\"\",\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"beforeSourceSQL\": \"\",\r\n\t\t\t\t\t\"afterSourceSQL\": \"\",\r\n\t\t\t\t\t\"beforeReceiverSQL\": \"\",\r\n\t\t\t\t\t\"afterReceiverSQL\": \"\",\r\n\t\t\t\t\t\"batchSQL\": \"\",\r\n\t\t\t\t\t\"fetchBatchSize\": \"\",\r\n\t\t\t\t\t\"insertBatchSize\": \"\",\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"orderByColumns\": \"\",\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"email_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"EMAIL\": 15\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"email\": 16\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\",\r\n\t\t\t\t\t\t\t\"id\": 0\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"email_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"EMAIL\": 1\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\",\r\n\t\t\t\t\t\t\t\"id\": 1\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"email_unique\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"EMAIL\": 16\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"email\": 16\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\",\r\n\t\t\t\t\t\t\t\"id\": 2\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"string\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"id\": 3,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t]\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"fio\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"fio\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"fio_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 2\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 8\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 222\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"fio_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 2\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 11,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"INTEGER\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"iban\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"iban\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"iban_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"IBAN\": 80\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"iban_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 4,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"inn\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"inn\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"inn_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"OKPO\": 1\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"INN\": 39\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"inn_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"KPP\": 2\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"inntest\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"inntest\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"inn\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"INN\": 2\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"inn2\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"INN\": 1\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"kpp\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"kpp\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"kpp_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"KPP\": 32\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"kpp_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"ltd\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"ltd\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"longp\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 1\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 2\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 6\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"longs\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 11\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 20\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"short\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ADDRESS\": 8\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"FIO\": 8\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"LTD\": 23\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"ogrn\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"ogrn\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"ogrn_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"OGRN\": 4\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"ogrn_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 2,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"okpo\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"okpo\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"okpo_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"OKPO\": 6\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"okpo_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"phone\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"phone\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"SNILS\": 1\r\n\t\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"PHONE\": 29\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_correctspec\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"PHONE\": 14\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"OKPO\": 1\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"pnonecity\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"pnonecity\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"phone_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\": \"datatype.\\\"snils\\\"\",\r\n\t\t\t\t\t\"sourceTableName\": \"datatype.\\\"snils\\\"\",\r\n\t\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\t\"description\": null,\r\n\t\t\t\t\t\"isTransfer\": false,\r\n\t\t\t\t\t\"isTruncate\": false,\r\n\t\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"id\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"snils_correct\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"SNILS\": 42\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 0,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"name\": \"\\\"snils_incorrect\\\"\",\r\n\t\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\t\"nameAnalyseResults\": [],\r\n\t\t\t\t\t\t\t\"emptyRowsCount\": 1,\r\n\t\t\t\t\t\t\t\"type\": \"VARCHAR\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\t\"priority\": null,\r\n\t\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\t\"isUpdate\": false,\r\n\t\t\t\t\t\"isLock\": false\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"beforeSourceSql\": null,\r\n\t\t\t\"isBeforeSourceEnabled\": false,\r\n\t\t\t\"afterSourceSql\": null,\r\n\t\t\t\"isAfterSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverSql\": null,\r\n\t\t\t\"isBeforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverSql\": null,\r\n\t\t\t\"isAfterReceiverEnabled\": false,\r\n\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\"isLock\": false,\r\n\t\t\t\"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить модель",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AuthorizationToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

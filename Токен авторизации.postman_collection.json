@@ -1,0 +1,52 @@
+{
+	"info": {
+		"_postman_id": "6cf1a809-798c-4d1b-87ce-b57bc2b309a4",
+		"name": "Токен авторизации",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16978745"
+	},
+	"item": [
+		{
+			"name": "login-endpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+							"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://vstest.labvs.local:8080/login",
+					"protocol": "http",
+					"host": [
+						"vstest",
+						"labvs",
+						"local"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

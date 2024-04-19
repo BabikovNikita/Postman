@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "094d96c0-ee91-4d5e-8654-d2fd313f19e5",
+		"name": "Oracle DataType",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16978745"
+	},
+	"item": [
+		{
+			"name": "Анализ БД Oracle DataType",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"store\": \r\n    {\r\n\t\t\t\"name\": \"Test connection oracle API DataType\",\r\n\t\t\t\"description\": \"Test connection oracle API DataType\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n\t\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\t\"loginSource\": \"datatype\",\r\n\t\t\t\"passwordSource\": \"iwueYEcvk00ECPB9AhvhaA==\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n\t\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\t\"loginReceiver\": \"datatype\",\r\n\t\t\t\"passwordReceiver\": \"zURXHE3lPlL5QUUrEpCQ9A==\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t},\r\n\t\"modelName\": \"Тестовая модель АПИ Oracle DataType\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://vstest.labvs.local:8090/analyze",
+					"protocol": "http",
+					"host": [
+						"vstest",
+						"labvs",
+						"local"
+					],
+					"port": "8090",
+					"path": [
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить модель Oracle_DataType",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID_OracleDataType}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID_OracleDataType}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login-endpoint Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+							"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/login",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД Oracle DataType",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_OracleDataType = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_OracleDataType\", ModelID_OracleDataType);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n\t\"name\": \"Тестовая модель АПИ Oracle DataType\",\r\n\t\"description\": \"Тестовая модель АПИ Oracle DataType\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection oracle API DataType\",\r\n\t\t\t\"description\": \"Test connection oracle API DataType\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n\t\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\t\"loginSource\": \"datatype\",\r\n\t\t\t\"passwordSource\": \"q1\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n\t\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\t\"loginReceiver\": \"datatype\",\r\n\t\t\t\"passwordReceiver\": \"q1\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n\t\t\t\"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AuthorizationToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

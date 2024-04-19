@@ -1,0 +1,741 @@
+{
+	"info": {
+		"_postman_id": "56c617ab-901a-41c6-a636-622584841f8a",
+		"name": "Проверка создания моделей с подключением Oracle\\MS_SQL\\Posgres",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16978745"
+	},
+	"item": [
+		{
+			"name": "login-endpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+							"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/login",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД Oracle",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_Oracle = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_Oracle\", ModelID_Oracle);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ Oracle\",\r\n\t\"description\": \"Тестовая модель АПИ Oracle\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection oracle API\",\r\n\t\t\t\"description\": \"Test connection oracle API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n\t\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\t\"loginSource\": \"devel\",\r\n\t\t\t\"passwordSource\": \"q1\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n\t\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\t\"loginReceiver\": \"devel\",\r\n\t\t\t\"passwordReceiver\": \"q1\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД Oracle NT",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_Oracle = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_Oracle\", ModelID_Oracle);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ Oracle NT\",\r\n\t\"description\": \"Тестовая модель АПИ Oracle NT\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection oracle API NT\",\r\n\t\t\t\"description\": \"Test connection oracle API NT\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.85:1521/ORCL\",\r\n\t\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\t\"loginSource\": \"hl\",\r\n\t\t\t\"passwordSource\": \"q1\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.86:1521/ORCLOUT\",\r\n\t\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\t\"loginReceiver\": \"hl\",\r\n\t\t\t\"passwordReceiver\": \"q1\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД Oracle NT Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_Oracle = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_Oracle\", ModelID_Oracle);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ Oracle NT\",\r\n\t\"description\": \"Тестовая модель АПИ Oracle NT\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection oracle API NT\",\r\n\t\t\t\"description\": \"Test connection oracle API NT\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.85:1521/ORCL\",\r\n\t\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\t\"loginSource\": \"hl\",\r\n\t\t\t\"passwordSource\": \"q1\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.86:1521/ORCLOUT\",\r\n\t\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\t\"loginReceiver\": \"hl\",\r\n\t\t\t\"passwordReceiver\": \"q1\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить сведения о модели Oracle",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var ModelName = pm.response.json().name;\r",
+							"pm.globals.set(\"ModelName\", ModelName);\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Тестовая модель АПИ Oracle\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID_Oracle}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID_Oracle}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД MS_SQL",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_MSSQL = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_MSSQL\", ModelID_MSSQL);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ MS_SQL\",\r\n\t\"description\": \"Тестовая модель АПИ MS_SQL\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection MS_SQL API\",\r\n\t\t\t\"description\": \"Test connection MS_SQL API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:sqlserver://10.5.10.48:1433;databaseName=devel;useUnicode=true;characterEncoding=UTF-8;encrypt=true;trustServerCertificate=true\",\r\n\t\t\t\"dbTypeSource\": \"MS_SQL\",\r\n\t\t\t\"loginSource\": \"sa\",\r\n\t\t\t\"passwordSource\": \"P@ssw0rd\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:sqlserver://10.5.10.49:1433;databaseName=devel;useUnicode=true;characterEncoding=UTF-8;encrypt=true;trustServerCertificate=true\",\r\n\t\t\t\"dbTypeReceiver\": \"MS_SQL\",\r\n\t\t\t\"loginReceiver\": \"sa\",\r\n\t\t\t\"passwordReceiver\": \"P@ssw0rd\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить сведения о модели MSSQL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Проверить что модель есть в списке моделей\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Тестовая модель АПИ MS_SQL\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID_MSSQL}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID_MSSQL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД Sybase",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_Sybase = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_Sybase\", ModelID_Sybase);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ Sybase\",\r\n\t\"description\": \"Тестовая модель АПИ Sybase\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection Sybase API\",\r\n\t\t\t\"description\": \"Test connection Sybase API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:sybase:Tds:10.5.10.67:5000/pubs2\",\r\n\t\t\t\"dbTypeSource\": \"SYBASE\",\r\n\t\t\t\"loginSource\": \"sa\",\r\n\t\t\t\"passwordSource\": \"P@ssw0rd\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:sybase:Tds:10.5.10.69:5000/pubs2\",\r\n\t\t\t\"dbTypeReceiver\": \"SYBASE\",\r\n\t\t\t\"loginReceiver\": \"sa\",\r\n\t\t\t\"passwordReceiver\": \"P@ssw0rd\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить сведения о модели Sybase",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Проверить что модель есть в списке моделей\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Тестовая модель АПИ Sybase\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID_Sybase}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID_Sybase}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД postgresql",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_Postgre = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_Postgre\", ModelID_Postgre);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ postgresql\",\r\n\t\"description\": \"Тестовая модель АПИ postgresql\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection postgresql API\",\r\n\t\t\t\"description\": \"Test connection postgresql API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:postgresql://10.5.10.67:5432/labvs\",\r\n\t\t\t\"dbTypeSource\": \"POSTGRES\",\r\n\t\t\t\"loginSource\": \"postgres\",\r\n\t\t\t\"passwordSource\": \"P@ssw0rd\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:postgresql://10.5.10.69:5432/labvs\",\r\n\t\t\t\"dbTypeReceiver\": \"POSTGRES\",\r\n\t\t\t\"loginReceiver\": \"postgres\",\r\n\t\t\t\"passwordReceiver\": \"P@ssw0rd\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД postgresql_NT",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_Postgre = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_Postgre\", ModelID_Postgre);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ postgresql NT\",\r\n\t\"description\": \"Тестовая модель АПИ postgresql NT\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection postgresql API\",\r\n\t\t\t\"description\": \"Test connection postgresql API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:postgresql://10.5.10.109:5432/hl\",\r\n\t\t\t\"dbTypeSource\": \"POSTGRES\",\r\n\t\t\t\"loginSource\": \"hl\",\r\n\t\t\t\"passwordSource\": \"P@ssw0rd\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:postgresql://10.5.10.110:5432/hl\",\r\n\t\t\t\"dbTypeReceiver\": \"POSTGRES\",\r\n\t\t\t\"loginReceiver\": \"hl\",\r\n\t\t\t\"passwordReceiver\": \"P@ssw0rd\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить сведения о модели Postgresql",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Проверить что модель есть в списке моделей\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Тестовая модель АПИ postgresql\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID_Postgre}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID_Postgre}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД MariaBD",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_Maria = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_Maria\", ModelID_Maria);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ MariaBD\",\r\n\t\"description\": \"Тестовая модель АПИ MariaBD\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection MariaBD API\",\r\n\t\t\t\"description\": \"Test connection MariaBD API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:mariadb://10.5.10.67:3306/labvsdatatypes\",\r\n\t\t\t\"dbTypeSource\": \"MARIADB\",\r\n\t\t\t\"loginSource\": \"devel\",\r\n\t\t\t\"passwordSource\": \"q1\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:mariadb://10.5.10.69:3306/labvsdatatypes\",\r\n\t\t\t\"dbTypeReceiver\": \"MARIADB\",\r\n\t\t\t\"loginReceiver\": \"devel\",\r\n\t\t\t\"passwordReceiver\": \"q1\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить сведения о модели MariaDB",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Проверить что модель есть в списке моделей\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Тестовая модель АПИ MariaBD\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID_Maria}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID_Maria}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AuthorizationToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

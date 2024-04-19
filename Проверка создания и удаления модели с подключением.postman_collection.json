@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "9d92dd52-e5ef-4049-848e-b613a645050f",
+		"name": "Проверка создания и удаления модели с подключением",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16978745"
+	},
+	"item": [
+		{
+			"name": "login-endpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+							"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://vstest.labvs.local:8080/login",
+					"protocol": "http",
+					"host": [
+						"vstest",
+						"labvs",
+						"local"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД Oracle",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID = pm.response.json();\r",
+							"pm.globals.set(\"ModelID\", ModelID);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ Oracle\",\r\n\t\"description\": \"Тестовая модель АПИ Oracle\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection oracle API\",\r\n\t\t\t\"description\": \"Test connection oracle API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n\t\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\t\"loginSource\": \"devel\",\r\n\t\t\t\"passwordSource\": \"q1\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n\t\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\t\"loginReceiver\": \"devel\",\r\n\t\t\t\"passwordReceiver\": \"q1\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить сведения о модели",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var ModelName = pm.response.json().name;\r",
+							"pm.globals.set(\"ModelName\", ModelName);\r",
+							"\r",
+							"pm.test(\"Проверить что модель есть в списке моделей\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Тестовая модель АПИ Oracle\");\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"var table = jsonData.stores[0].tables[6].attributes;\r",
+							"console.log(table);\r",
+							"pm.globals.set(\"table\", JSON.stringify(table));\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить модель",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить что модель удалена",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var ModelName = pm.response.json().name;\r",
+							"pm.globals.set(\"ModelName\", ModelName);\r",
+							"\r",
+							"pm.test(\"Проверить что модель есть в списке моделей\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"Тестовая модель АПИ Oracle\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AuthorizationToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

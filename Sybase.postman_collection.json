@@ -1,0 +1,616 @@
+{
+	"info": {
+		"_postman_id": "5ffdcddf-65a1-411f-b7d1-13bdc0c5916e",
+		"name": "Sybase",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16978745"
+	},
+	"item": [
+		{
+			"name": "login-endpoint Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+							"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://vstest.labvs.local:8080/login",
+					"protocol": "http",
+					"host": [
+						"vstest",
+						"labvs",
+						"local"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД Sybase",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID = pm.response.json();\r",
+							"pm.globals.set(\"ModelID\", ModelID);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ Sybase\",\r\n\t\"description\": \"Тестовая модель АПИ Sybase\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection Sybase API\",\r\n\t\t\t\"description\": \"Test connection Sybase API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:sybase:Tds:10.5.10.67:5000/pubs2\",\r\n\t\t\t\"dbTypeSource\": \"SYBASE\",\r\n\t\t\t\"loginSource\": \"sa\",\r\n\t\t\t\"passwordSource\": \"P@ssw0rd\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:sybase:Tds:10.5.10.69:5000/pubs2\",\r\n\t\t\t\"dbTypeReceiver\": \"SYBASE\",\r\n\t\t\t\"loginReceiver\": \"sa\",\r\n\t\t\t\"passwordReceiver\": \"P@ssw0rd\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить сведения о модели",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var ModelName = pm.response.json().name;\r",
+							"pm.globals.set(\"ModelName\", ModelName);\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Тестовая модель АПИ Sybase\");\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"var table = jsonData.stores[0].tables[6].attributes;\r",
+							"console.log(table);\r",
+							"pm.globals.set(\"table\", JSON.stringify(table));\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID_Sybase}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID_Sybase}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Запустить анализ данных Oracle",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"store\": {\r\n\t\t\"name\": \"Test connection Sybase API\",\r\n\t\t\"description\": \"Test connection Sybase API\",\r\n\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n\t\t\"dbTypeSource\": \"SYBASE\",\r\n\t\t\"loginSource\": \"devel\",\r\n\t\t\"passwordSource\": \"OEe6mQBTvsXvtzW8s9NXqQ==\",\r\n\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n\t\t\"dbTypeReceiver\": \"SYBASE\",\r\n\t\t\"loginReceiver\": \"devel\",\r\n\t\t\"passwordReceiver\": \"DP03N+98Lldp597nZid2aA==\",\r\n\t\t\"tables\": [],\r\n\t\t\"beforeSourceSql\": null,\r\n\t\t\"isBeforeSourceEnabled\": false,\r\n\t\t\"afterSourceSql\": null,\r\n\t\t\"isAfterSourceEnabled\": false,\r\n\t\t\"beforeReceiverSql\": null,\r\n\t\t\"isBeforeReceiverEnabled\": false,\r\n\t\t\"afterReceiverSql\": null,\r\n\t\t\"isAfterReceiverEnabled\": false,\r\n\t\t\"shellScriptBefore\": null,\r\n\t\t\"shellScriptAfter\": null\r\n\t},\r\n\t\"modelName\": \"Тестовая модель АПИ Sybase\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://vstest.labvs.local:8090/analyze",
+					"protocol": "http",
+					"host": [
+						"vstest",
+						"labvs",
+						"local"
+					],
+					"port": "8090",
+					"path": [
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Запустить обезличивание данных",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"store\": {\r\n\t\t\"name\": \"Test connection oracle API\",\r\n\t\t\"description\": \"Test connection oracle API\",\r\n\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\"loginSource\": \"devel\",\r\n\t\t\"passwordSource\": \"cV0oC3QFlmSK8dlBh5eMNQ==\",\r\n\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\"loginReceiver\": \"devel\",\r\n\t\t\"passwordReceiver\": \"DW7F+SDwMecbj4gQcu2rTg==\",\r\n\t\t\"tables\": [\r\n\t\t\t\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"DEVEL.\\\"CONTACTS\\\"\",\r\n\t\t\t\t\"sourceTableName\": \"DEVEL.\\\"CONTACTS\\\"\",\r\n\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\"description\": null,\r\n\t\t\t\t\"isTransfer\": true,\r\n\t\t\t\t\"isTruncate\": true,\r\n\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\"attributes\": [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"ADDRESS\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"ADDRESS\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"FIO\": 46\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ADDRESS\": 6000\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"ADDRESSREG\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"ADDRESS\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"FIO\": 890\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ADDRESS\": 6000\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"APARTMENT\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"BANKBIK\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"BANKCARD\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"BANKCLIENT\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"BANKCORR\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"BANKCVC\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"BANKDATE\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"BANKINN\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"BANKKPP\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"BANKNUM\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"CITY\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"COUNTRY\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 2998\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"DATEOFBIRTH\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"EMAIL\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"email\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"EMAIL\": 3000\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"email\": 3000\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"FATHERNAME\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"FIO\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ADDRESS\": 592\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"FIO\": 3944\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"FIO\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"FIO\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ADDRESS\": 1070\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"FIO\": 5566\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"FIRSTNAME\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"FIO\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ADDRESS\": 192\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"FIO\": 4370\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"GENDER\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"HOUSE\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"ID\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"INN_FIZ\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"INN_UR\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"KPP\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"LASTNAME\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"FIO\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ADDRESS\": 356\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"FIO\": 1428\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"LOGIN\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"MOBIL\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"PHONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"SNILS\": 30\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"PHONE\": 78\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"OGRN\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"OMS\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"PASPORTCODE\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"IBAN\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"IBAN\": 34\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"PASPORTDATE\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"PASPORTNUM\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"IBAN\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"IBAN\": 36\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"PASPORTNUMCODE\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"PHONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"IBAN\": 24\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"PHONE\": 79\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"PASPORTOTD\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"ADDRESS\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"FIO\": 828\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ADDRESS\": 5850\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"PASSWORDH\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"PASSWORDU\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"PHONE\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"RANDOMVALUE\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"IBAN\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"IBAN\": 28\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\"emptyRowsCount\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"REGION\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"SNILS\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"name\": \"\\\"STREET\\\"\",\r\n\t\t\t\t\t\t\"description\": \"\",\r\n\t\t\t\t\t\t\"typePersonalInformation\": \"NONE\",\r\n\t\t\t\t\t\t\"dataTypeScript\": null,\r\n\t\t\t\t\t\t\"dateTypeStatistics\": null,\r\n\t\t\t\t\t\t\"emptyRowsCount\": 3000\r\n\t\t\t\t\t}\r\n\t\t\t\t],\r\n\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\"priority\": null,\r\n\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\"isUpdate\": false\r\n\t\t\t}\r\n\t\t\t],\r\n\t\t\"beforeSourceSql\": null,\r\n\t\t\"isBeforeSourceEnabled\": false,\r\n\t\t\"afterSourceSql\": null,\r\n\t\t\"isAfterSourceEnabled\": false,\r\n\t\t\"beforeReceiverSql\": null,\r\n\t\t\"isBeforeReceiverEnabled\": false,\r\n\t\t\"afterReceiverSql\": null,\r\n\t\t\"isAfterReceiverEnabled\": false,\r\n\t\t\"shellScriptBefore\": null,\r\n\t\t\"shellScriptAfter\": null\r\n\t},\r\n\t\"modelName\": \"Тестовая модель АПИ Oracle\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/tasks",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Запустить обезличивание данных Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"store\": {\r\n\t\t\"name\": \"Test connection oracle API\",\r\n\t\t\"description\": \"Test connection oracle API\",\r\n\t\t\"jdbcUrlSource\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n\t\t\"dbTypeSource\": \"ORACLE\",\r\n\t\t\"loginSource\": \"devel\",\r\n\t\t\"passwordSource\": \"cV0oC3QFlmSK8dlBh5eMNQ==\",\r\n\t\t\"jdbcUrlReceiver\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n\t\t\"dbTypeReceiver\": \"ORACLE\",\r\n\t\t\"loginReceiver\": \"devel\",\r\n\t\t\"passwordReceiver\": \"DW7F+SDwMecbj4gQcu2rTg==\",\r\n\t\t\"tables\": [\r\n\t\t\t\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"DEVEL.\\\"CONTACTS\\\"\",\r\n\t\t\t\t\"sourceTableName\": \"DEVEL.\\\"CONTACTS\\\"\",\r\n\t\t\t\t\"receiverTableName\": null,\r\n\t\t\t\t\"description\": null,\r\n\t\t\t\t\"isTransfer\": true,\r\n\t\t\t\t\"isTruncate\": true,\r\n\t\t\t\t\"selectionCriteria\": null,\r\n\t\t\t\t\"attributes\": {{table}},\r\n\t\t\t\t\"beforeSourceSQL\": null,\r\n\t\t\t\t\"afterSourceSQL\": null,\r\n\t\t\t\t\"batchSQL\": null,\r\n\t\t\t\t\"beforeReceiverSQL\": null,\r\n\t\t\t\t\"afterReceiverSQL\": null,\r\n\t\t\t\t\"fetchBatchSize\": null,\r\n\t\t\t\t\"insertBatchSize\": null,\r\n\t\t\t\t\"shellScriptBefore\": null,\r\n\t\t\t\t\"shellScriptAfter\": null,\r\n\t\t\t\t\"priority\": null,\r\n\t\t\t\t\"orderByColumns\": null,\r\n\t\t\t\t\"isUpdate\": false\r\n\t\t\t}\r\n\t\t\t],\r\n\t\t\"beforeSourceSql\": null,\r\n\t\t\"isBeforeSourceEnabled\": false,\r\n\t\t\"afterSourceSql\": null,\r\n\t\t\"isAfterSourceEnabled\": false,\r\n\t\t\"beforeReceiverSql\": null,\r\n\t\t\"isBeforeReceiverEnabled\": false,\r\n\t\t\"afterReceiverSql\": null,\r\n\t\t\"isAfterReceiverEnabled\": false,\r\n\t\t\"shellScriptBefore\": null,\r\n\t\t\"shellScriptAfter\": null\r\n\t},\r\n\t\"modelName\": \"Тестовая модель АПИ Oracle\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/tasks",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Статус анализа данных",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Тестовая модель АПИ\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand_analyze}}/stats/analyzer/models/{{ModelName}}",
+					"host": [
+						"{{stand_analyze}}"
+					],
+					"path": [
+						"stats",
+						"analyzer",
+						"models",
+						"{{ModelName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить подключение к БД",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"id\": {{ModelID}},\r\n\t\"name\": \"{{ModelName}}\",\r\n\t\"description\": \"{{description}}\",\r\n\t\"stores\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить модель",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить heartbeat",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/heartbeat/Тестовая модель АПИ Sybase",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"heartbeat",
+						"Тестовая модель АПИ Sybase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Список heartbeat",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/heartbeat/Тестовая модель АПИ Oracle",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"heartbeat",
+						"Тестовая модель АПИ Oracle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить список моделей",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Проверка удаления модели\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"Тестовая модель АПИ\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AuthorizationToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

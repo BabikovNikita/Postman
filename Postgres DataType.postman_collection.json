@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "7ccd23c1-6d50-4040-afa1-a4901a6e8461",
+		"name": "Postgres DataType",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16978745"
+	},
+	"item": [
+		{
+			"name": "login-endpoint Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+							"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/login",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать модель и подключение БД postgresql DataType",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var ModelID_PostgreDataType = pm.response.json();\r",
+							"pm.globals.set(\"ModelID_PostgreDataType\", ModelID_PostgreDataType);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\r\n\t\"name\": \"Тестовая модель АПИ DataType postgresql\",\r\n\t\"description\": \"Тестовая модель АПИ DataType postgresql\",\r\n\t\"stores\": [\r\n\t\t{\r\n\t\t\t\"name\": \"Test connection postgresql DataType API\",\r\n\t\t\t\"description\": \"Test connection postgresql API\",\r\n\t\t\t\"jdbcUrlSource\": \"jdbc:postgresql://10.5.10.67:5432/labvsdatatype\",\r\n\t\t\t\"dbTypeSource\": \"POSTGRES\",\r\n\t\t\t\"loginSource\": \"postgres\",\r\n\t\t\t\"passwordSource\": \"P@ssw0rd\",\r\n\t\t\t\"jdbcUrlReceiver\": \"jdbc:postgresql://10.5.10.69:5432/labvsdatatype\",\r\n\t\t\t\"dbTypeReceiver\": \"POSTGRES\",\r\n\t\t\t\"loginReceiver\": \"postgres\",\r\n\t\t\t\"passwordReceiver\": \"P@ssw0rd\",\r\n\t\t\t\"tables\": [],\r\n\t\t\t\"beforeSourceSql\": \"\",\r\n\t\t\t\"afterSourceSql\": \"\",\r\n\t\t\t\"afterReceiverSql\": \"\",\r\n\t\t\t\"beforeReceiverSql\": \"\",\r\n\t\t\t\"afterSourceEnabled\": false,\r\n\t\t\t\"beforeSourceEnabled\": false,\r\n\t\t\t\"beforeReceiverEnabled\": false,\r\n\t\t\t\"afterReceiverEnabled\": false,\r\n            \"isOneTaskPerTable\": true\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{stand}}/models",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Анализ БД postgresql DataType",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"store\": \r\n    {\r\n\t\t\"name\": \"Test connection postgresql DataType API\",\r\n\t\t\"description\": \"Test connection postgresql API\",\r\n\t\t\"jdbcUrlSource\": \"jdbc:postgresql://10.5.10.67:5432/labvsdatatype\",\r\n\t\t\"dbTypeSource\": \"POSTGRES\",\r\n\t\t\"loginSource\": \"labvsdatatype\",\r\n\t\t\"passwordSource\": \"YIW9NOLmrhtclYr3BhYNhob8QoGMxMAI\",\r\n\t\t\"jdbcUrlReceiver\": \"jdbc:postgresql://10.5.10.69:5432/labvsdatatype\",\r\n\t\t\"dbTypeReceiver\": \"POSTGRES\",\r\n\t\t\"loginReceiver\": \"labvsdatatype\",\r\n\t\t\"passwordReceiver\": \"wWI7VTjEkyFIFWa5B5ffGlSywS+t0uci\",\r\n\t\t\"tables\": [],\r\n\t\t\"beforeSourceSql\": null,\r\n\t\t\"isBeforeSourceEnabled\": false,\r\n\t\t\"afterSourceSql\": null,\r\n\t\t\"isAfterSourceEnabled\": false,\r\n\t\t\"beforeReceiverSql\": null,\r\n\t\t\"isBeforeReceiverEnabled\": false,\r\n\t\t\"afterReceiverSql\": null,\r\n\t\t\"isAfterReceiverEnabled\": false,\r\n\t\t\"shellScriptBefore\": null,\r\n\t\t\"shellScriptAfter\": null,\r\n\t\t\"isLock\": false,\r\n\t\t\"isOneTaskPerTable\": true\r\n\t},\r\n\t\"modelName\": \"Тестовая модель АПИ DataType postgresql\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://vstest.labvs.local:8090/analyze",
+					"protocol": "http",
+					"host": [
+						"vstest",
+						"labvs",
+						"local"
+					],
+					"port": "8090",
+					"path": [
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить модель PostgresDataType",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{stand}}/models/{{ModelID_PostgreDataType}}",
+					"host": [
+						"{{stand}}"
+					],
+					"path": [
+						"models",
+						"{{ModelID_PostgreDataType}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AuthorizationToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
