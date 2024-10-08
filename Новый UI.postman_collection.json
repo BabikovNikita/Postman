@@ -1,0 +1,3058 @@
+{
+	"info": {
+		"_postman_id": "11bf3eaf-d425-43f5-9429-f663543d1203",
+		"name": "Новый UI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16978745",
+		"_collection_link": "https://restless-satellite-278484.postman.co/workspace/VSHUFFLE~8e89dd21-4bb8-4c6b-a406-015899fc49b6/collection/16978745-11bf3eaf-d425-43f5-9429-f663543d1203?action=share&source=collection_link&creator=16978745"
+	},
+	"item": [
+		{
+			"name": "Модели и папки",
+			"item": [
+				{
+					"name": "login-endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+									"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/login",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание модели",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accessToken",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"name5\",\r\n  \"comment\": \"comment\",\r\n  \"folderId\": \"root\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models/create",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Экспорт модели",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"modelsIds\": [\r\n    \"2\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models/export",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models",
+								"export"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Импорт модели",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1ef49c35-ba2e-4ff0-ab36-88df59a46a41"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models/import?name=NewTestModel",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models",
+								"import"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "NewTestModel"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка моделей",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models?folderId=root",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models"
+							],
+							"query": [
+								{
+									"key": "folderId",
+									"value": "root"
+								},
+								{
+									"key": "params",
+									"value": "%7B%22paginate%22%3A%20%7B%22page%22%3A%200%2C%20%22size%22%3A%2020%7D%2C%20%22sort%22%3A%20%7B%22status%22%3A%20%22ASC%22%7D%7D",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление модели",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"modelsIds\": \r\n  [\r\n    \"1\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление нескольких моделей",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"modelsIds\": \r\n  [\r\n    \"1\",\r\n    \"2\",\r\n    \"3\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание папки",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"folderName\": \"Папка\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models/folder",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models",
+								"folder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка папок",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models/folders-list",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models",
+								"folders-list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации о папке",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models/folder?folderId=83f0d3b6-f449-4010-b465-48fe65b0c071",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models",
+								"folder"
+							],
+							"query": [
+								{
+									"key": "folderId",
+									"value": "83f0d3b6-f449-4010-b465-48fe65b0c071"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление папки",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"folderId\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models/folder",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models",
+								"folder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Перемещение модели в папку",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"modelsIds\": \r\n  [\r\n    \"1\"\r\n  ],\r\n  \"newFolderId\": \"8b50f504-ccd5-430f-9974-b75b816f131c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/models/folder/move",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"models",
+								"folder",
+								"move"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить сведения о модели",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//var ModelName = pm.response.json().name;\r",
+									"//pm.globals.set(\"ModelName\", ModelName);\r",
+									"//var description = pm.response.json().description;\r",
+									"//pm.globals.set(\"description\", description);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/models/{{ModelID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"models",
+								"{{ModelID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить сведения о модели Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//var ModelName = pm.response.json().name;\r",
+									"//pm.globals.set(\"ModelName\", ModelName);\r",
+									"//var description = pm.response.json().description;\r",
+									"//pm.globals.set(\"description\", description);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/models/{{ModelID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"models",
+								"{{ModelID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Словари",
+			"item": [
+				{
+					"name": "login-endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+									"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://vstest.labvs.local:8080/login",
+							"protocol": "http",
+							"host": [
+								"vstest",
+								"labvs",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка словарей",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "code",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "createdDate",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение словаря по коду",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "code",
+									"value": "TEST12",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries/TEST14",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries",
+								"TEST14"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "createdDate",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Экспорт словаря",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries/export/?dictionaryId",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries",
+								"export",
+								""
+							],
+							"query": [
+								{
+									"key": "dictionaryId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Импорт словаря",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file ",
+									"type": "file",
+									"src": "/C:/Users/Юрий/Downloads/dictionary_48c1e83b-ec53-47f0-aea4-ed1a980b3262.csv"
+								},
+								{
+									"key": "name",
+									"value": "Test1",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "TEST1",
+									"type": "text"
+								},
+								{
+									"key": "description ",
+									"value": "Test1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries/import",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries",
+								"import"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление словаря",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"dictionaryId\": \"3bcf801a-e4cc-4b3f-a78b-5efb1077dfd0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение элементов словаря",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"paginate\": {\r\n    \"page\": 1,\r\n    \"size\": 3\r\n  },\r\n  \"filters\": {\r\n    \"numeric_code\": \"27\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries/dictionary-items?dictionaryId=48c1e83b-ec53-47f0-aea4-ed1a980b3262",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries",
+								"dictionary-items"
+							],
+							"query": [
+								{
+									"key": "dictionaryId",
+									"value": "48c1e83b-ec53-47f0-aea4-ed1a980b3262"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Сохранение элемента словаря",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"2d4c2b-10c2-480f-bb76-b1e83df892ae\",\r\n  \"fields\": {\r\n    \"numeric\": \"22\",\"alpha2_code\": \"PS\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries/dictionary-item?dictionaryId=d7dea292-e678-49b8-846e-4ff1f2d66ae9",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries",
+								"dictionary-item"
+							],
+							"query": [
+								{
+									"key": "dictionaryId",
+									"value": "d7dea292-e678-49b8-846e-4ff1f2d66ae9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление элемента словаря",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"84830068-0ad1-4ee5-9e75-a9aa335c33c0\",\r\n  \"fields\": {\r\n    \"numeric_code\":\"29\",\r\n    \"﻿alpha2_code\":\"DONE\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries/dictionary-item?dictionaryId=82932cc8-aa4a-403b-a63a-037b68668f37",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries",
+								"dictionary-item"
+							],
+							"query": [
+								{
+									"key": "dictionaryId",
+									"value": "82932cc8-aa4a-403b-a63a-037b68668f37"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление элементов словаря",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"dictionaryItemIds\": [\r\n    \"20318210-b105-4474-8fcd-8123200c1b4b\",\r\n    \"77ff5cd0-2ddf-400c-847a-f212fed99429\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries/dictionary-items",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries",
+								"dictionary-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка виджетов словаря",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries/dictionary-items/widgets?dictionaryId=91aa2d00-bfb1-40dc-98b2-35b3bfc6c3c2",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries",
+								"dictionary-items",
+								"widgets"
+							],
+							"query": [
+								{
+									"key": "dictionaryId",
+									"value": "91aa2d00-bfb1-40dc-98b2-35b3bfc6c3c2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление списка виджетов словаря",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"label\": {\r\n      \"additionalProp1\": \"string\",\r\n      \"additionalProp2\": \"string\",\r\n      \"additionalProp3\": \"string\"\r\n    },\r\n    \"name\": \"string\",\r\n    \"widget\": \"string\",\r\n    \"valueType\": \"string\"\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/dictionaries/dictionary-items/widgets?dictionaryId",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"dictionaries",
+								"dictionary-items",
+								"widgets"
+							],
+							"query": [
+								{
+									"key": "dictionaryId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Анализ",
+			"item": [
+				{
+					"name": "Редактирование таблиц в результатах анализа",
+					"item": [
+						{
+							"name": "Включить, выключить обезличивание таблиц в результатах анализа",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"isDepersonalization\": true,\r\n  \"items\": \r\n  [\r\n    \"e87f2e01-dfda-4292-ad7b-7cd2ee8d2456\",\"13048abe-f4b1-4b4e-a995-82c61a148dbe\"\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{stand}}/api/v2/analysis-results/depersonalization",
+									"host": [
+										"{{stand}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"analysis-results",
+										"depersonalization"
+									],
+									"query": [
+										{
+											"key": "tableId",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Удалить таблицу из результатов анализа",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resultsIds\":[\r\n        \"e87f2e01-dfda-4292-ad7b-7cd2ee8d2456\"\r\n        ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{stand}}/api/v2/analysis-results/delete",
+									"host": [
+										"{{stand}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"analysis-results",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "tableId",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Блокировать таблицу в результатах анализа",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"lockItems\": [\r\n    {\r\n      \"id\": \"e87f2e01-dfda-4292-ad7b-7cd2ee8d2456\",\r\n      \"comment\": \"блокировка таблицы 18\"\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{stand}}/api/v2/analysis-results/lock",
+									"host": [
+										"{{stand}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"analysis-results",
+										"lock"
+									],
+									"query": [
+										{
+											"key": "tableId",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Разблокировать таблицу в результатах анализа",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"lockItems\": [\r\n    {\r\n      \"id\": \"e87f2e01-dfda-4292-ad7b-7cd2ee8d2456\",\r\n      \"comment\": \"Разблокировка таблицы e87f2e01-dfda-4292-ad7b-7cd2ee8d2456\"\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{stand}}/api/v2/analysis-results/unlock",
+									"host": [
+										"{{stand}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"analysis-results",
+										"unlock"
+									],
+									"query": [
+										{
+											"key": "tableId",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login-endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+									"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://vstest.labvs.local:8080/login",
+							"protocol": "http",
+							"host": [
+								"vstest",
+								"labvs",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запуск анализа",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand_8090}}/api/v2/analysis/start/{{ModelID}}",
+							"host": [
+								"{{stand_8090}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"analysis",
+								"start",
+								"{{ModelID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Остановка анализа",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{stand_8090}}/api/v2/analysis/stop/{{ModelID}}",
+							"host": [
+								"{{stand_8090}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"analysis",
+								"stop",
+								"{{ModelID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение процента выполнения анализа",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stand_8090}}/api/v2/analysis/percent/{{ModelID}}",
+							"host": [
+								"{{stand_8090}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"analysis",
+								"percent",
+								"{{ModelID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Результат анализа",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/{{ConnectionID}}/analysis-results",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"{{ConnectionID}}",
+								"analysis-results"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка колонок таблицы",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stand}}/api/v2/columns/{tableId}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"columns",
+								"{tableId}"
+							],
+							"query": [
+								{
+									"key": "tableId",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "filter",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление колонки",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"89\",\r\n  \"name\": \"ID\",\r\n  \"type\": \"VARCHAR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/columns/1",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"columns",
+								"1"
+							],
+							"query": [
+								{
+									"key": "tableId",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление правил колонки",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"columnId\": \"90\",\r\n  \"rules\": [\r\n    {\r\n      \"conditions\": [\r\n        {\r\n          \"id\": \"74f8d4a9-e611-4a72-b000-c022d0dd416f\",\r\n          \"column\": \"Cyber_cyber\",\r\n          \"value\": \"101\",\r\n          \"domain\": \"ИНН\"\r\n        }\r\n      ],\r\n      \"domains\": [\r\n        {\r\n          \"domain\": \"ИНН\"\r\n        },\r\n        {\r\n          \"domain\": \"ИНН\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/columns/rules/1",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"columns",
+								"rules",
+								"1"
+							],
+							"query": [
+								{
+									"key": "tableId",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление колонок",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"columnIds\": [\r\n    \"90\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/columns/1",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"columns",
+								"1"
+							],
+							"query": [
+								{
+									"key": "tableId",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Статистика анализа",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://vstest.labvs.local:8081/stats/analyzer/models",
+							"protocol": "http",
+							"host": [
+								"vstest",
+								"labvs",
+								"local"
+							],
+							"port": "8081",
+							"path": [
+								"stats",
+								"analyzer",
+								"models"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Подключение к БД",
+			"item": [
+				{
+					"name": "login-endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+									"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://vstest.labvs.local:8080/login",
+							"protocol": "http",
+							"host": [
+								"vstest",
+								"labvs",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создать подключение",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AuthorizationToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": {\r\n    \"name\": \"Тестовое connection oracle datatype\",\r\n    \"comment\": \"Тест connection oracle API datatype\"\r\n  },\r\n  \"source\": {\r\n    \"connectionInfo\": {\r\n      \"db\": \"ORACLE\",\r\n      \"address\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n      \"login\": \"datatype\",\r\n      \"password\": \"q1\"\r\n    },\r\n    \"sqlScripts\": [\r\n    {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"BEFORE_ANALYSIS\"\r\n\t},\r\n    {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"AFTER_ANALYSIS\"\r\n\t},\r\n    {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n\t},\r\n        {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n\t}\r\n      \r\n    ],\r\n    \"bashScripts\": [\r\n    {\r\n\t\t\"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt\",\r\n\t\t\"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n\t},\r\n    {\r\n\t\t\"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt\",\r\n\t\t\"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n\t}\r\n    ]\r\n  },\r\n  \"receiver\": {\r\n    \"connectionInfo\": {\r\n      \"db\": \"ORACLE\",\r\n      \"address\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n      \"login\": \"datatype\",\r\n      \"password\": \"q1\"\r\n    },\r\n    \"sqlScripts\": [\r\n    {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n\t},\r\n        {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n\t}\r\n    ],\r\n    \"bashScripts\": [\r\n    {\r\n\t\t\"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt\",\r\n\t\t\"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n\t},\r\n        {\r\n\t\t\"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt\",\r\n\t\t\"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n\t}\r\n    ]\r\n  },\r\n  \"receiverIsSource\": false,\r\n  \"prepareDb\": {\r\n    \"triggers\": true,\r\n    \"indexes\": true,\r\n    \"externalKeys\": true\r\n  },\r\n  \"depersonalization\": {\r\n    \"isClear\": true,\r\n    \"noClear\": false\r\n  },\r\n  \"performance\": {\r\n\r\n    \"isSingleThread\": false\r\n  },\r\n  \"stopIfError\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/{{ModelID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"{{ModelID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создать подключение Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AuthorizationToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": {\r\n    \"name\": \"Тестовое connection oracle datatype\",\r\n    \"comment\": \"Тест connection oracle API datatype\"\r\n  },\r\n  \"source\": {\r\n    \"connectionInfo\": {\r\n      \"db\": \"ORACLE\",\r\n      \"address\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL\",\r\n      \"login\": \"datatype\",\r\n      \"password\": \"q1\"\r\n    },\r\n    \"sqlScripts\": [\r\n    {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"BEFORE_ANALYSIS\"\r\n\t},\r\n    {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"AFTER_ANALYSIS\"\r\n\t},\r\n    {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n\t},\r\n        {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n\t}\r\n      \r\n    ],\r\n    \"bashScripts\": [\r\n    {\r\n\t\t\"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt\",\r\n\t\t\"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n\t},\r\n    {\r\n\t\t\"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt\",\r\n\t\t\"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n\t}\r\n    ]\r\n  },\r\n  \"receiver\": {\r\n    \"connectionInfo\": {\r\n      \"db\": \"ORACLE\",\r\n      \"address\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL\",\r\n      \"login\": \"datatype\",\r\n      \"password\": \"q1\"\r\n    },\r\n    \"sqlScripts\": [\r\n    {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n\t},\r\n        {\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber\",\r\n\t\t\"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n\t}\r\n    ],\r\n    \"bashScripts\": [\r\n    {\r\n\t\t\"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt\",\r\n\t\t\"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n\t},\r\n        {\r\n\t\t\"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt\",\r\n\t\t\"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n\t}\r\n    ]\r\n  },\r\n  \"receiverIsSource\": false,\r\n  \"prepareDb\": {\r\n    \"triggers\": true,\r\n    \"indexes\": true,\r\n    \"externalKeys\": true\r\n  },\r\n  \"depersonalization\": {\r\n    \"isClear\": true,\r\n    \"noClear\": false\r\n  },\r\n  \"performance\": {\r\n\r\n    \"isSingleThread\": false\r\n  },\r\n  \"stopIfError\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/{{ModelID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"{{ModelID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменить схему подключения",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"schemaName\": \"test schema\",\r\n    \"tables\": [\r\n      {\r\n        \"tableName\": \"DATATYPE.\\\"ACOUNTNUMBER\\\"\",\r\n        \t\t\t\t\t\"fields\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"fieldName\": \"\\\"ID\\\"\",\r\n\t\t\t\t\t\t\t\"analysis\": true,\r\n\t\t\t\t\t\t\t\"isSelected\": true\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n         \"isSelected\": false\r\n      }\r\n    ],\r\n    \"isSelected\": false\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/schemes/{{SchemaId}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"schemes",
+								"{{SchemaId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновить подключение",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": {\r\n    \"name\": \"ВC\",\r\n    \"comment\": \"Тест connection oracle API-1 change\"\r\n  },\r\n  \"source\": {\r\n    \"connectionInfo\": {\r\n      \"db\": \"POSTGRES\",\r\n      \"address\": \"jdbc:oracle:thin:@//10.5.10.66:1521/ORCL change\",\r\n      \"login\": \"change\",\r\n      \"password\": \"change\"\r\n    },\r\n    \"sqlScripts\": [\r\n      {\r\n        \"name\": \"sqlScripts BEFORE_ANALYSIS источник change\",\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber change\",\r\n\t\t\"scriptStage\": \"BEFORE_ANALYSIS\"\r\n      },\r\n      {\r\n        \"name\": \"sqlScripts AFTER_ANALYSIS источник change\",\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber change\",\r\n\t\t\"scriptStage\": \"AFTER_ANALYSIS\"\r\n      },\r\n      {\r\n        \"name\": \"sqlScripts BEFORE_DEPERSONALIZATION источник change\",\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber change\",\r\n\t\t\"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n      },\r\n      {\r\n        \"name\": \"sqlScripts AFTER_DEPERSONALIZATION источник change\",\r\n\t\t\"code\": \"select *  from DATATYPE.acountnumber change\",\r\n\t\t\"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n      }\r\n    ],\r\n    \"bashScripts\": [\r\n      {\r\n        \"name\": \"bashScripts BEFORE_DEPERSONALIZATION источник change\",\r\n        \"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt change\",\r\n        \"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n      },\r\n      {\r\n        \"name\": \"bashScripts AFTER_DEPERSONALIZATION источник change\",\r\n        \"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt change\",\r\n        \"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n      }\r\n    ]\r\n  },\r\n  \"receiver\": {\r\n    \"connectionInfo\": {\r\n      \"db\": \"POSTGRES\",\r\n      \"address\": \"jdbc:oracle:thin:@//10.5.10.68:1521/ORCL change\",\r\n      \"login\": \"change\",\r\n      \"password\": \"change\"\r\n    },\r\n    \"sqlScripts\": [\r\n      {\r\n        \"name\": \"sqlScripts BEFORE_DEPERSONALIZATION приемник change\",\r\n        \"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt change\",\r\n        \"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n      },\r\n      {\r\n        \"name\": \"sqlScripts AFTER_DEPERSONALIZATION приемник change\",\r\n        \"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt change\",\r\n        \"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n      }\r\n    ],\r\n    \"bashScripts\": [\r\n      {\r\n        \"name\": \"bashScripts BEFORE_DEPERSONALIZATION приемник change\",\r\n        \"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt change\",\r\n        \"scriptStage\": \"BEFORE_DEPERSONALIZATION\"\r\n      },\r\n      {\r\n        \"name\": \"bashScripts AFTER_DEPERSONALIZATION приемник change\",\r\n        \"code\": \"echo \\\"Bash test passed_BASH\\\" > /home/labvs/Bash_test_passed_BASH.txt change\",\r\n        \"scriptStage\": \"AFTER_DEPERSONALIZATION\"\r\n      }\r\n    ]\r\n  },\r\n  \"receiverIsSource\": true,\r\n  \"prepareDb\": {\r\n\r\n  },\r\n  \"depersonalization\": {\r\n    \"isClear\": false,\r\n    \"noClear\": true\r\n  },\r\n  \"performance\": {\r\n    \"readLinesCount\": 10,\r\n    \"processedLinesCount\": 10,\r\n    \"insertLinesCount\": 10,\r\n    \"commitChangesLinesCount\": 10\r\n\r\n  }\r\n  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/info/{{ConnectionID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"info",
+								"{{ConnectionID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Выбрать подключение",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/{{ConnectionID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"{{ConnectionID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить информацию о подключении",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/info/{{ConnectionID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"info",
+								"{{ConnectionID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Прочитать схемы и таблицы источника",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/schemes/{{ConnectionID}}/extract",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"schemes",
+								"{{ConnectionID}}",
+								"extract"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Записать схему подключения в БД",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"schemaName\": \"DATATYPE\",\r\n        \"tables\": [\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"ACOUNTNUMBER\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"number\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"number_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"number_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"ADDRESS\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"address_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"toponim\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"CHECKCONTRLSUM\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"ADDRESS\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"STRING\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"data\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"EMAIL\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"IBAN\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"SNILS\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ACCOUNT_NUMBER\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"FIO\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"OGRN\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"KPP\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"CREDITCARD\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"OKPO\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"MOBILEPHONE\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"CREDITCARD\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"TEST_CARD\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"card_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"card_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"card_unique\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"TEST_CARDNUMBER\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"EMAIL\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"email_unique\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"email_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"email_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"FIO\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"fio_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"INCORRECT\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"fio_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"CORRECT\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"IBAN\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"iban_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"iban_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"INN\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"inn_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"inn_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"INT_TEST\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"NUMBER1\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"KPP\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"kpp_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"kpp_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"LTD\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"longp\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"longs\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"short\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"NEWTABLE123 \\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\" \\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"OGRN\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"ogrn_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ogrn_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"OKPO\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"okpo_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"okpo_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"PHONE\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"phone_correctspec\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"PHONE_CORRECT\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"phone_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"SNILS\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"snils_incorrect\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"snils_correct\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"date\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"dateutc\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"DATE2\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"datehhmm\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"DATE_STRING\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"DATE_STRING2\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"TIME_STRING\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"DATE\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"number\\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\"snils\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"number\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"phone\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ogrn\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"inn\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"acountnumber\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"kpp\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"creditcard\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"ID\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    },\r\n                    {\r\n                        \"fieldName\": \"\\\"okpo\\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            },\r\n            {\r\n                \"tableName\": \"DATATYPE.\\\"таблица123 \\\"\",\r\n                \"fields\": [\r\n                    {\r\n                        \"fieldName\": \"\\\" \\\"\",\r\n                        \"analysis\": true,\r\n                        \"isSelected\": true\r\n                    }\r\n                ],\r\n                \"isSelected\": true\r\n            }\r\n        ],\r\n        \"isSelected\": true\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/schemes/{{ConnectionID}}/extract",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"schemes",
+								"{{ConnectionID}}",
+								"extract"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить параметры производительности",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/performance",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"performance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Проверить подключение",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/check/{{ConnectionID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"check",
+								"{{ConnectionID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить подключение",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/info/{{ConnectionID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"info",
+								"{{ConnectionID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить список подключений в модели",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AuthorizationToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/{{ModelID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"{{ModelID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить список схем подключения",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/schemes/{{ConnectionID}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"schemes",
+								"{{ConnectionID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить список БД",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/connections/db",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"connections",
+								"db"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{AuthorizationToken}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Администрирование пользователей",
+			"item": [
+				{
+					"name": "login-endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+									"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/login",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка пользователей",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stand}}/api/v2/users",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users"
+							],
+							"query": [
+								{
+									"key": "login",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "fullName",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "roles",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "createdDate",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "lastLoginDate",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"test\",\n  \"fullName\": \"Test\",\n  \"roles\": [\n    \"ROLE_ADMIN\"\n  ],\n  \"password\": \"12345\",\n  \"comment\": \"Comment\",\n  \"isLocked\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/users",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление пользователя",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"string\",\n  \"roles\": [\n    \"string\"\n  ],\n  \"comment\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/users/2",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"2"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление пароля пользователя",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/password/{userId}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"password",
+								"{userId}"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление статуса блокировки пользователей",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isLocked\": true,\n  \"userIds\": [\n    0\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/lock-status",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"lock-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение лога пользователя",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/users/{userId}/log",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{userId}",
+								"log"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Результат анализа",
+			"item": []
+		},
+		{
+			"name": "Правила анализа",
+			"item": [
+				{
+					"name": "login-endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+									"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/login",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создать пользовательское активное правило",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Активное правило3\",\r\n  \"description\": \"description INN Тестовое правило-1234567890\",\r\n  \"comment\": \"comment INN Тестовое правило-1234567890\",\r\n  \"threshold\": 20,\r\n  \"key\": \"INN_1\",\r\n  \"analysisCode\": \"analysisCode test\",\r\n  \"depersonalizationCode\": \"depersonalizationCode test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/depersonalization-rules/rules",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"depersonalization-rules",
+								"rules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создать пользовательское не активное правило",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Не Активное правило2\",\r\n  \"description\": \"комментарий проверка валидации\",\r\n  \"comment\": \"Ключ правила 30 символ\",\r\n  \"threshold\": 100,\r\n  \"key\": \"INN_TEST_KEY_12345678901234567\",\r\n  \"analysisCode\": \"analysisCode test\",\r\n  \"depersonalizationCode\": \"depersonalizationCode test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/depersonalization-rules/rules-draft",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"depersonalization-rules",
+								"rules-draft"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создать папку правила",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"name\": \"имя папки1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/depersonalization-rules/folders",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"depersonalization-rules",
+								"folders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Переместить правило в папку",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rulesIds\": [\r\n    \"5e13915e-b689-49ae-8162-9e16009e739a\",\r\n    \"0f4576fd-a7b7-4228-905e-5ef0f69fa79c\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/depersonalization-rules/folders/{{FolderId}}/rules/move",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"depersonalization-rules",
+								"folders",
+								"{{FolderId}}",
+								"rules",
+								"move"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменить системное правило",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"comment\": \"\",\r\n  \"threshold\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/depersonalization-rules/system-rules/{{ruleId}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"depersonalization-rules",
+								"system-rules",
+								"{{ruleId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменить пользовательское активное правило",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Активное правило_new\",\r\n  \"description\": \"description\",\r\n  \"comment\": \"comment\",\r\n  \"threshold\": 100,\r\n  \"key\": \"INN_NEW\",\r\n  \"analysisCode\": \"analysisCode test_NEW\",\r\n  \"depersonalizationCode\": \"depersonalizationCode test_NEW\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/depersonalization-rules/rules/{{ruleId}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"depersonalization-rules",
+								"rules",
+								"{{ruleId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменить пользовательское не активное правило",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Не Активное правило_new\",\r\n  \"description\": \"description_new\",\r\n  \"comment\": \"comment_new\",\r\n  \"threshold\": 1,\r\n  \"key\": \"INN_NEW1\",\r\n  \"analysisCode\": \"analysisCode test_NEW1\",\r\n  \"depersonalizationCode\": \"depersonalizationCode test_NEW1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/depersonalization-rules/rules-draft/{{ruleId}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"depersonalization-rules",
+								"rules-draft",
+								"{{ruleId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Активировать, деактивировать правило",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rulesIds\": \r\n  [\r\n\"de6dbeb7-7e6b-411c-bf3a-cc259faba2dd\"\r\n]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/depersonalization-rules/rules/activate?isActive=false",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"depersonalization-rules",
+								"rules",
+								"activate"
+							],
+							"query": [
+								{
+									"key": "isActive",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить информацию о правиле",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/depersonalization-rules/rules/{{ruleId}}",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"depersonalization-rules",
+								"rules",
+								"{{ruleId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Маскинг",
+			"item": [
+				{
+					"name": "login-endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+									"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/login",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запустить маскинг",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var AuthorizationToken = pm.response.headers.get('Authorization');\r",
+									"pm.globals.set(\"AuthorizationToken\", AuthorizationToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://10.5.10.79:8880/api/v2/depersonalization/start/{{ModelID}}",
+							"protocol": "http",
+							"host": [
+								"10",
+								"5",
+								"10",
+								"79"
+							],
+							"port": "8880",
+							"path": [
+								"api",
+								"v2",
+								"depersonalization",
+								"start",
+								"{{ModelID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Токен авторизации",
+			"item": [
+				{
+					"name": "Токен авторизации",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/auth/login",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновить токен",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\": \"Bearer\",\r\n    \"accessToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FOQUxZWkVSIiwiUk9MRV9BRE1JTiIsIlJPTEVfTUFTS0VSIl0sImlzUGFzc3dvcmRUZW1wb3JhcnkiOmZhbHNlLCJzdWIiOiJhZG1pbiIsImlhdCI6MTcyODA0MjM1NSwiZXhwIjoxNzI4MDQzMjU1fQ.0NxUj0X3XnDkOUtwSNb8p6IkbinFq9cqg3tQ_ldcPbndGvc7fU-XZ6J3cZKSW9p0Nvq6ttuR1PoKFvTBcpvauw\",\r\n    \"refreshToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcyODA0MjM1NSwiZXhwIjoxNzI4NjQ3MTU1fQ.96uTJ6quURyMkjI7NxximE04B5ktZ3MJQOdglSbUDQm2ir3XLc4n4A1u2muIZbaDGIE4sPsm5AX_9yP1aG2P5Q\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/auth/refresh",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Проверка токена",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcyODI5NTkzMCwiZXhwIjoxNzI4OTAwNzMwfQ.VvhTCJXRxv60lggrqsCtU_ids60h-FKb00quX2dGg494Bpy82pmQSwuCFVgbMbYj0u72VFGYqoV15Ro22rNKIg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"name104\",\r\n  \"comment\": \"comment\",\r\n  \"folderId\": \"root\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{stand}}/api/v2/auth/any-role",
+							"host": [
+								"{{stand}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"any-role"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AuthorizationToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
